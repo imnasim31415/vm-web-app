@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VM Info</title>
+  </head>
+  <body>
+    <h1>VM Hostname: {{ hostname }}</h1>
+    <h2>Git Info</h2>
+    <ul>
+      <li><strong>Branch:</strong> {{ git_info.branch_name }}</li>
+      <li><strong>Commit Hash:</strong> {{ git_info.commit_hash }}</li>
+      <li><strong>Commit Message:</strong> {{ git_info.commit_msg }}</li>
+    </ul>
+  </body>
+</html>
