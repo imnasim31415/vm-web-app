@@ -1,14 +1,14 @@
-import subprocess
-
-def run_cmd(cmd):
-    try:
-        return subprocess.check_output(cmd, stderr=subprocess.DEVNULL).decode('utf-8').strip()
-    except Exception:
-        return "N/A"
-
 def get_git_info():
-    return {
-        'commit_hash': run_cmd(['git', 'rev-parse', 'HEAD']),
-        'commit_msg': run_cmd(['git', 'log', '-1', '--pretty=%B']),
-        'branch_name': run_cmd(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    info = {
+        'commit_hash': 'N/A',
+        'commit_msg': 'N/A',
+        'branch_name': 'N/A'
     }
+    try:
+        with open('build_info.txt', 'r') as f:
+            for line in f:
+                k, v = line.strip().split('=', 1)
+                info[k] = v
+    except Exception:
+        pass
+    return info
