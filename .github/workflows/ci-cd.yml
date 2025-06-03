@@ -40,18 +40,22 @@ jobs:
 
     strategy:
       matrix:
-        host:
-          [
-            "${{ secrets.VM1_HOST }}",
-            "${{ secrets.VM2_HOST }}",
-            "${{ secrets.VM3_HOST }}",
-          ]
+        vm: [vm1, vm2, vm3]
 
     steps:
-      - name: Deploy to ${{ matrix.host }}
+      - name: Set up host variable
+        id: set-host
+        run: |
+          case "${{ matrix.vm }}" in
+            vm1) echo "host=${{ secrets.VM1_HOST }}" >> "$GITHUB_OUTPUT" ;;
+            vm2) echo "host=${{ secrets.VM2_HOST }}" >> "$GITHUB_OUTPUT" ;;
+            vm3) echo "host=${{ secrets.VM3_HOST }}" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ matrix.host }}
+          host: ${{ steps.set-host.outputs.host }}
           username: ${{ secrets.VM_SSH_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           script: |
