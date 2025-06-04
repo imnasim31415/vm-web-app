@@ -1,20 +1,15 @@
-# Use lightweight Python image
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependencies
-COPY requirements.txt .
+COPY . .
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Copy app code
-COPY app.py .
+# Get git info before copying to docker image
+RUN chmod +x get_git_info.sh && ./get_git_info.sh
 
-# Default port
 EXPOSE 5000
 
-# Entrypoint
 CMD ["python", "app.py"]
