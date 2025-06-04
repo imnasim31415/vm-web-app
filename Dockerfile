@@ -1,15 +1,17 @@
+ARG GIT_BRANCH
+ARG GIT_COMMIT
+ARG GIT_MESSAGE
+
 FROM python:3.11-slim
-
 WORKDIR /app
-
 COPY . .
 
-# Install dependencies
 RUN pip install -r requirements.txt
 
-# Get git info before copying to docker image
-RUN chmod +x get_git_info.sh && ./get_git_info.sh
+# Save git metadata
+RUN echo "$GIT_BRANCH" > git_info.txt && \
+    echo "$GIT_COMMIT" >> git_info.txt && \
+    echo "$GIT_MESSAGE" >> git_info.txt
 
 EXPOSE 5000
-
 CMD ["python", "app.py"]

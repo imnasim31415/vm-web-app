@@ -1,5 +1,5 @@
 from flask import Flask
-import socket
+import os
 
 app = Flask(__name__)
 
@@ -12,13 +12,20 @@ def read_git_info():
                 "commit": lines[1],
                 "message": lines[2]
             }
-    except Exception as e:
+    except:
         return {"branch": "N/A", "commit": "N/A", "message": "N/A"}
+
+def get_vm_hostname():
+    try:
+        with open("/host_hostname", "r") as f:
+            return f.read().strip()
+    except:
+        return os.uname().nodename  # fallback to container hostname
 
 @app.route("/")
 def index():
     git_info = read_git_info()
-    hostname = socket.getfqdn()  # gets the actual VM hostname
+    hostname = get_vm_hostname()
     return f"""
     <h1>VM Hostname: {hostname}</h1>
     <p><strong>Git Branch:</strong> {git_info['branch']}</p>

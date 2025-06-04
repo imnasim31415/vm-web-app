@@ -22,12 +22,23 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Get Git metadata
+        id: gitmeta
+        run: |
+          echo "branch=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_OUTPUT
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: imnasim31415/vm-web-app:latest
+          build-args: |
+            GIT_BRANCH=${{ steps.gitmeta.outputs.branch }}
+            GIT_COMMIT=${{ steps.gitmeta.outputs.commit }}
+            GIT_MESSAGE=${{ steps.gitmeta.outputs.message }}
 
   deploy-vm1:
     needs: build-and-push
