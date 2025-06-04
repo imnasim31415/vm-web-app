@@ -8,8 +8,8 @@ def index():
     vm_hostname = os.environ.get('VM_HOSTNAME', 'Unknown VM')
     commit_hash = os.environ.get('COMMIT_HASH', 'Unknown Commit')
     return f'''
-    <h1>ektu change Simple VM Web App Testing after SSH key with no Passphrase without space</h1>
-    <p><strong>VM Hostname:</strong> {vm_hostname} onek change</p>
+    <h1>Simple VM Web App</h1>
+    <p><strong>VM Hostname:</strong> {vm_hostname}</p>
     <p><strong>Git Commit Hash:</strong> {commit_hash}</p>
     '''
 
