@@ -25,9 +25,9 @@ jobs:
       - name: Get Git metadata
         id: gitmeta
         run: |
-          echo "branch=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_OUTPUT
-          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-          echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+          echo "GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          echo "GIT_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "GIT_MESSAGE=$(git log -1 --pretty=%B | head -n 1)" >> $GITHUB_ENV
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
@@ -36,9 +36,9 @@ jobs:
           push: true
           tags: imnasim31415/vm-web-app:latest
           build-args: |
-            GIT_BRANCH=${{ steps.gitmeta.outputs.branch }}
-            GIT_COMMIT=${{ steps.gitmeta.outputs.commit }}
-            GIT_MESSAGE=${{ steps.gitmeta.outputs.message }}
+            GIT_BRANCH=${{ env.GIT_BRANCH }}
+            GIT_COMMIT=${{ env.GIT_COMMIT }}
+            GIT_MESSAGE=${{ env.GIT_MESSAGE }}
 
   deploy-vm1:
     needs: build-and-push
@@ -54,6 +54,7 @@ jobs:
             --name vm-web-app \
             -v /etc/hostname:/host_hostname:ro \
             imnasim31415/vm-web-app:latest
+
   deploy-vm2:
     needs: build-and-push
     runs-on: [self-hosted, vm2]
@@ -68,6 +69,7 @@ jobs:
             --name vm-web-app \
             -v /etc/hostname:/host_hostname:ro \
             imnasim31415/vm-web-app:latest
+
   deploy-vm3:
     needs: build-and-push
     runs-on: [self-hosted, vm3]

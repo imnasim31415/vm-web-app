@@ -8,18 +8,20 @@ def read_git_info():
         with open("git_info.txt", "r") as f:
             lines = f.read().strip().split("\n")
             return {
-                "branch": lines[0],
-                "commit": lines[1],
-                "message": lines[2]
+                "branch": lines[0] if len(lines) > 0 else "N/A",
+                "commit": lines[1] if len(lines) > 1 else "N/A",
+                "message": lines[2] if len(lines) > 2 else "N/A"
             }
-    except:
+    except Exception as e:
+        print(f"Error reading git_info.txt: {e}")
         return {"branch": "N/A", "commit": "N/A", "message": "N/A"}
 
 def get_vm_hostname():
     try:
         with open("/host_hostname", "r") as f:
             return f.read().strip()
-    except:
+    except Exception as e:
+        print(f"Error reading /host_hostname: {e}")
         return os.uname().nodename  # fallback to container hostname
 
 @app.route("/")
