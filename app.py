@@ -1,6 +1,4 @@
-# app.py
-
-from flask import Flask
+from flask import Flask, render_template
 import os
 
 app = Flask(__name__)
@@ -24,18 +22,13 @@ def get_vm_hostname():
             return f.read().strip()
     except Exception as e:
         print(f"Error reading /host_hostname: {e}")
-        return os.uname().nodename  # fallback to container hostname
+        return os.uname().nodename
 
 @app.route("/")
 def index():
     git_info = read_git_info()
     hostname = get_vm_hostname()
-    return f"""
-    <h1>VM Hostname: {hostname}</h1>
-    <p><strong>Git Branch:</strong> {git_info['branch']}</p>
-    <p><strong>Commit Hash:</strong> {git_info['commit']}</p>
-    <p><strong>Commit Message:</strong> {git_info['message']}</p>
-    """
+    return render_template("index.html", git_info=git_info, hostname=hostname)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

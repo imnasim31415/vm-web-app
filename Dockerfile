@@ -1,8 +1,3 @@
-# Declare ARGs before and after FROM
-ARG GIT_BRANCH
-ARG GIT_COMMIT
-ARG GIT_MESSAGE
-
 FROM python:3.11-slim
 
 # Re-declare inside the build context

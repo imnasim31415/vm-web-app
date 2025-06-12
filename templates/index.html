@@ -1,0 +1,47 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>VM Info</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        color: #333;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .card {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 400px;
+      }
+      h1 {
+        color: #007bff;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      p {
+        margin: 10px 0;
+        font-size: 16px;
+      }
+      strong {
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>VM Hostname: {{ hostname }}</h1>
+      <p><strong>Git Branch:</strong> {{ git_info.branch }}</p>
+      <p><strong>Commit Hash:</strong> {{ git_info.commit }}</p>
+      <p><strong>Commit Message:</strong> {{ git_info.message }}</p>
+    </div>
+  </body>
+</html>
