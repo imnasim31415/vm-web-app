@@ -1,28 +1,26 @@
-# Dockerfile
-
-# Build arguments passed from GitHub Actions
+# Declare ARGs before and after FROM
 ARG GIT_BRANCH
 ARG GIT_COMMIT
 ARG GIT_MESSAGE
 
 FROM python:3.11-slim
 
-# Set working directory
-WORKDIR /app
+# Re-declare inside the build context
+ARG GIT_BRANCH
+ARG GIT_COMMIT
+ARG GIT_MESSAGE
 
-# Copy app code
+WORKDIR /app
 COPY . .
 
-# Install dependencies
 RUN pip install -r requirements.txt
 
-# Write Git info to a file
+# Debug print
+RUN echo "Branch: $GIT_BRANCH" && echo "Commit: $GIT_COMMIT" && echo "Message: $GIT_MESSAGE"
+
 RUN echo "$GIT_BRANCH" > git_info.txt && \
     echo "$GIT_COMMIT" >> git_info.txt && \
     echo "$GIT_MESSAGE" >> git_info.txt
 
-# Expose Flask app port
 EXPOSE 5000
-
-# Run the app
 CMD ["python", "app.py"]
