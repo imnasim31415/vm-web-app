@@ -1,4 +1,4 @@
-name: Build and Deploy Flask App
+name: Nodeprobe CI/CD
 
 on:
   push:

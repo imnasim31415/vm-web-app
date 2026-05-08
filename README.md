@@ -1,6 +1,6 @@
-# VM Web App — DSi DevOps Club Project
+# Nodeprobe — DSi DevOps Club Project
 
-A full DevOps pipeline project: containerized Flask web app deployed across 3 VMs behind an Nginx reverse proxy, with automated CI/CD via GitHub Actions and system monitoring via Prometheus + Grafana.
+Containerized Flask app deployed across 3 VMs behind an Nginx reverse proxy. Shows which node served your request and what commit it's running. Full CI/CD via GitHub Actions with Prometheus + Grafana monitoring.
 
 ---
 
